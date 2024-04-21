@@ -8,7 +8,7 @@ use Nette;
 
 
 /**
- * Handles 4xx HTTP error responses.
+ * Handles HTTP error responses.
  */
 final class ErrorPresenter extends Nette\Application\UI\Presenter
 {

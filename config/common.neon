@@ -3,8 +3,8 @@ parameters:
 
 application:
 	errorPresenter:
-		4xx: Error4xx
-		5xx: Error5xx
+		4xx: Error
+		5xx: Error
 	mapping: App\*Module\Presenters\*Presenter
 
 

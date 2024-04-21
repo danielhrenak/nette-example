@@ -5,10 +5,10 @@ services:
     build:
       context: docker/php-fpm
     container_name: example-webserver
-    working_dir: /app
+    working_dir: /application
     volumes:
-      - ./:/app
+      - ./:/application
     environment:
-      - WEB_DOCUMENT_ROOT=/app/www
+      - WEB_DOCUMENT_ROOT=/application/www
     ports:
       - "80:80"

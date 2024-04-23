@@ -1,5 +1,2 @@
-
-.idea/intellij-latte/xmlSources/NetteForms.xml
-.idea/intellij-latte/xmlSources/NetteApplication.xml
-.idea/intellij-latte/xmlSources/Latte.xml
-.idea/intellij-latte/xmlSources/Latte.dtd
+/.idea
+/vendor

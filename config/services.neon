@@ -1,5 +1,14 @@
 services:
-	- App\Router\RouterFactory::createRouter
+	router: App\Router\RouterFactory::createRouter
+	xmlRepository:
+		create: App\Infrastructure\Repository\XmlRepository::createRepository
+		setup:
+			- $xmlFile = '%appDir%/../data/data.xml'
+	petRepository:
+		create: App\Infrastructure\Repository\PetRepository::createRepository
+		inject: true
+		setup:
+			- $xmlRepository = @xmlRepository
 
 
 search:

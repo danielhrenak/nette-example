@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
+use App\Domain\Pet;
+use App\Infrastructure\Repository\PetRepository;
 use App\Presenters\Exceptions\MethodNotAllowedException;
 use JetBrains\PhpStorm\NoReturn;
 use Nette;
@@ -11,21 +13,28 @@ use Nette;
 
 final class PetPresenter extends Nette\Application\UI\Presenter
 {
+
+    public function __construct(private PetRepository $petRepository)
+    {
+    }
+
     #[NoReturn]
     public function renderDefault(): void
     {
+
+        $pet = Pet::createFromString($this->getHttpRequest()->getRawBody());
+
         match ($this->getHttpRequest()->getMethod()) {
             'PUT' => $this->update(),
-            'POST' => $this->add(),
+            'POST' => $this->add($pet),
             default => MethodNotAllowedException::create(),
         };
     }
 
 
-    private function add():void
+    private function add(Pet $pet):void
     {
-        var_dump('POST');
-        die();
+        $this->petRepository->add($pet);
     }
 
     private function update():void

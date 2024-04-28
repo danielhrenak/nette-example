@@ -1,6 +1,8 @@
 <?php
 
-namespace App\Domain;
+namespace App\Domain\Pets;
+
+use Nette\Utils\Json;
 
 class Pet
 {
@@ -14,7 +16,7 @@ class Pet
 
     public static function createFromString(string $string): self
     {
-        $json = json_decode($string, true);
+        $json = Json::decode($string, true);
         return new self($json['id'], $json['name']);
     }
 

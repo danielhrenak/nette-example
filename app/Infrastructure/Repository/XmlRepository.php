@@ -2,7 +2,7 @@
 
 namespace App\Infrastructure\Repository;
 
-final class XmlRepository
+class XmlRepository
 {
     public string $xmlFile;
     public function __construct(string $xmlFile = NULL)

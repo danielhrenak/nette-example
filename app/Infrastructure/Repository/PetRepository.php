@@ -38,7 +38,7 @@ class PetRepository implements DomainRepositoryInterface
     public function update(Pet $pet): void
     {
         if (!$this->doesPetIdExists($pet->getId())) {
-            throw new PetNotFoundException($pet);
+            throw new PetNotFoundException($pet->getId());
         }
 
         $xml = $this->xmlRepository->getXml();
@@ -57,6 +57,18 @@ class PetRepository implements DomainRepositoryInterface
             }
         }
         throw new PetNotFoundException($id);
+    }
+
+    public function delete(int $id): void
+    {
+        if (!$this->doesPetIdExists($id)) {
+            throw new PetNotFoundException($id);
+        }
+
+        $xml = $this->xmlRepository->getXml();
+        $petElement = $xml->xpath("//pet[id={$id}]")[0];
+        unset($petElement[0]);
+        $xml->asXML($this->xmlRepository->getXmlFile());
     }
 
     private function doesPetIdExists($id): bool

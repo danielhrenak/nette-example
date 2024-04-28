@@ -7,9 +7,9 @@ use InvalidArgumentException;
 
 class PetNotFoundException extends InvalidArgumentException
 {
-    public function __construct(Pet $pet, $message = "Pet not found", $code = 404, \Throwable $previous = null)
+    public function __construct(int $id, $message = "Pet not found", $code = 404, \Throwable $previous = null)
     {
-        $message = "Pet with id {$pet->getId()} not found";
+        $message = "Pet with id {$id} not found";
         parent::__construct($message, $code, $previous);
     }
 }

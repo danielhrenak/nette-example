@@ -36,8 +36,12 @@ final class PetPresenter extends Nette\Application\UI\Presenter
 
     public function renderDetail(int $id): void
     {
-        $pet = $this->petRepository->get($id);
-        $this->template->array = $pet->toArray();
+        match ($this->getHttpRequest()->getMethod()) {
+            'GET' => $this->get($id),
+            'DELETE' => $this->delete($id),
+            default => MethodNotAllowedException::create(),
+        };
+
         $this->template->setFile(__DIR__ . '/templates/Pet/json.latte');
         $this->layout = false;
     }
@@ -51,5 +55,17 @@ final class PetPresenter extends Nette\Application\UI\Presenter
     private function update(Pet $pet):void
     {
         $this->petRepository->update($pet);
+    }
+
+    private function get(int $id):void
+    {
+        $pet = $this->petRepository->get($id);
+        $this->template->array = $pet->toArray();
+    }
+
+    private function delete(int $id):void
+    {
+        $pet = $this->petRepository->delete($id);
+        $this->template->array = ['status' => 'success'];
     }
 }

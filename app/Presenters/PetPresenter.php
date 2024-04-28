@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Presenters;
 
-use App\Domain\Pet;
+use App\Domain\Pets\Pet;
 use App\Infrastructure\Repository\PetRepository;
 use App\Presenters\Exceptions\MethodNotAllowedException;
 use JetBrains\PhpStorm\NoReturn;
@@ -21,14 +21,17 @@ final class PetPresenter extends Nette\Application\UI\Presenter
     #[NoReturn]
     public function renderDefault(): void
     {
-
         $pet = Pet::createFromString($this->getHttpRequest()->getRawBody());
 
         match ($this->getHttpRequest()->getMethod()) {
-            'PUT' => $this->update(),
+            'PUT' => $this->update($pet),
             'POST' => $this->add($pet),
             default => MethodNotAllowedException::create(),
         };
+
+        $this->template->json = ['status' => 'success'];
+        $this->template->setFile(__DIR__ . '/templates/Pet/json.latte');
+        $this->layout = false;
     }
 
 
@@ -37,9 +40,8 @@ final class PetPresenter extends Nette\Application\UI\Presenter
         $this->petRepository->add($pet);
     }
 
-    private function update():void
+    private function update(Pet $pet):void
     {
-        var_dump('PUT');
-        die();
+        $this->petRepository->update($pet);
     }
 }

@@ -16,6 +16,7 @@ final class RouterFactory
     {
         $router = new RouteList;
         $router->addRoute('pet', ['presenter' => 'Pet', 'action' => 'default']);
+        $router->addRoute('pet/findByStatus', ['presenter' => 'Pet', 'action' => 'findByStatus']);
         $router->addRoute('pet/<id>', ['presenter' => 'Pet', 'action' => 'detail', 'id' => null]);
         return $router;
     }

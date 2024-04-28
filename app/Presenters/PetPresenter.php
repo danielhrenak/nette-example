@@ -46,6 +46,19 @@ final class PetPresenter extends Nette\Application\UI\Presenter
         $this->layout = false;
     }
 
+    public function renderFindByStatus(): void
+    {
+        $status = $this->getHttpRequest()->getQuery('status');
+        $pets = $this->petRepository->findByStatus($status);
+        $this->template->array = [];
+        foreach ($pets as $pet) {
+            $this->template->array[] = $pet->toArray();
+        }
+        $this->template->setFile(__DIR__ . '/templates/Pet/json.latte');
+        $this->layout = false;
+
+    }
+
 
     private function add(Pet $pet):void
     {

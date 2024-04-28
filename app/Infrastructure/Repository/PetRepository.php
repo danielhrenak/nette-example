@@ -81,4 +81,16 @@ class PetRepository implements DomainRepositoryInterface
         }
         return false;
     }
+
+    public function findByStatus(mixed $status): array
+    {
+        $xml = $this->xmlRepository->getXml();
+        $pets = [];
+        foreach ($xml->pet as $pet) {
+            if ($pet->status->__toString() == $status) {
+                $pets[] = Pet::createFromArray(['id' => $pet->id->__toString(), 'name' => $pet->name->__toString(), 'status' => $pet->status->__toString()]);
+            }
+        }
+        return $pets;
+    }
 }

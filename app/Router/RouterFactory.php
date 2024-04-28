@@ -15,9 +15,8 @@ final class RouterFactory
     public static function createRouter(): RouteList
     {
         $router = new RouteList;
-        $router->addRoute('pet',
-            ['presenter' => 'Pet', 'action' => 'default']
-        );
+        $router->addRoute('pet', ['presenter' => 'Pet', 'action' => 'default']);
+        $router->addRoute('pet/<id>', ['presenter' => 'Pet', 'action' => 'detail', 'id' => null]);
         return $router;
     }
 }

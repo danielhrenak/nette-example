@@ -47,4 +47,13 @@ class Pet
     {
         return $this->status->getValue();
     }
+
+    public function toArray(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'name' => $this->getName(),
+            'status' => $this->getStatus()
+        ];
+    }
 }

@@ -48,6 +48,17 @@ class PetRepository implements DomainRepositoryInterface
         $xml->asXML($this->xmlRepository->getXmlFile());
     }
 
+    public function get(int $id): Pet
+    {
+        $xml = $this->xmlRepository->getXml();
+        foreach ($xml->pet as $pet) {
+            if ($pet->id == $id) {
+                return Pet::createFromArray(['id' => $pet->id, 'name' => $pet->name, 'status' => $pet->status]);
+            }
+        }
+        throw new PetNotFoundException($id);
+    }
+
     private function doesPetIdExists($id): bool
     {
         $xml = $this->xmlRepository->getXml();

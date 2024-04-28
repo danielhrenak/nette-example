@@ -29,7 +29,15 @@ final class PetPresenter extends Nette\Application\UI\Presenter
             default => MethodNotAllowedException::create(),
         };
 
-        $this->template->json = ['status' => 'success'];
+        $this->template->array = ['status' => 'success'];
+        $this->template->setFile(__DIR__ . '/templates/Pet/json.latte');
+        $this->layout = false;
+    }
+
+    public function renderDetail(int $id): void
+    {
+        $pet = $this->petRepository->get($id);
+        $this->template->array = $pet->toArray();
         $this->template->setFile(__DIR__ . '/templates/Pet/json.latte');
         $this->layout = false;
     }

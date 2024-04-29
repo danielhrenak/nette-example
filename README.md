@@ -32,7 +32,7 @@
 3. Spustite si docker `docker compose up`
 4. Jednotlivé requesty sú testovateľné cez postman - kolekcia Pets.postman_collection.json
 
-## Nedkončené úlohy
+## Nedokončené úlohy
 - Pridanie tagov k zvieratku
 - Pridanie kategórií zvieratka
 - Zobrazenie zvieratka podla tagov

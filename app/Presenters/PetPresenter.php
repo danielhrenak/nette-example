@@ -9,6 +9,7 @@ use App\Infrastructure\Repository\PetRepository;
 use App\Presenters\Exceptions\MethodNotAllowedException;
 use JetBrains\PhpStorm\NoReturn;
 use Nette;
+use Psl\Type\Exception\Exception;
 
 
 final class PetPresenter extends Nette\Application\UI\Presenter
@@ -23,24 +24,32 @@ final class PetPresenter extends Nette\Application\UI\Presenter
     {
         $pet = Pet::createFromString($this->getHttpRequest()->getRawBody());
 
-        match ($this->getHttpRequest()->getMethod()) {
-            'PUT' => $this->update($pet),
-            'POST' => $this->add($pet),
-            default => MethodNotAllowedException::create(),
-        };
+        try {
+            match ($this->getHttpRequest()->getMethod()) {
+                'PUT' => $this->update($pet),
+                'POST' => $this->add($pet),
+                default => MethodNotAllowedException::create(),
+            };
+            $this->template->array = ['code' => 200, 'type' => 'json', 'message' => 'Successful operation'];
+        } catch (\Exception $e) {
+            $this->template->array = ['code' => $e->getCode(), 'type' => 'json', 'message' => $e->getMessage()];
+        }
 
-        $this->template->array = ['status' => 'success'];
         $this->template->setFile(__DIR__ . '/templates/Pet/json.latte');
         $this->layout = false;
     }
 
     public function renderDetail(int $id): void
     {
-        match ($this->getHttpRequest()->getMethod()) {
-            'GET' => $this->get($id),
-            'DELETE' => $this->delete($id),
-            default => MethodNotAllowedException::create(),
-        };
+        try {
+            match ($this->getHttpRequest()->getMethod()) {
+                'GET' => $this->get($id),
+                'DELETE' => $this->delete($id),
+                default => MethodNotAllowedException::create(),
+            };
+        } catch (\Exception $e) {
+            $this->template->array = ['code' => $e->getCode(), 'type' => 'json', 'message' => $e->getMessage()];
+        }
 
         $this->template->setFile(__DIR__ . '/templates/Pet/json.latte');
         $this->layout = false;
@@ -50,15 +59,15 @@ final class PetPresenter extends Nette\Application\UI\Presenter
     {
         $status = $this->getHttpRequest()->getQuery('status');
         $pets = $this->petRepository->findByStatus($status);
-        $this->template->array = [];
+        $petsArray= [];
         foreach ($pets as $pet) {
-            $this->template->array[] = $pet->toArray();
+            $petsArray[] = $pet->toArray();
         }
+        $this->template->array = ['code' => 200, 'type' => 'json', 'message' => $petsArray];
         $this->template->setFile(__DIR__ . '/templates/Pet/json.latte');
         $this->layout = false;
 
     }
-
 
     private function add(Pet $pet):void
     {
@@ -73,12 +82,12 @@ final class PetPresenter extends Nette\Application\UI\Presenter
     private function get(int $id):void
     {
         $pet = $this->petRepository->get($id);
-        $this->template->array = $pet->toArray();
+        $this->template->array = ['code' => 200, 'type' => 'json', 'message' => $pet->toArray()];
     }
 
     private function delete(int $id):void
     {
-        $pet = $this->petRepository->delete($id);
-        $this->template->array = ['status' => 'success'];
+        $this->petRepository->delete($id);
+        $this->template->array = ['code' => 200, 'type' => 'json', 'message' => 'Successful operation'];
     }
 }

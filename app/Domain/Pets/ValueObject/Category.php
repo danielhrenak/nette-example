@@ -4,12 +4,7 @@ namespace App\Domain\Pets\ValueObject;
 
 class Category
 {
-    private $id;
-    private $name;
-
-    public function __construct(int $id, string $name)
+    public function __construct(private Identifier $id, private Name $name)
     {
-        $this->id = $id;
-        $this->name = $name;
     }
 }
